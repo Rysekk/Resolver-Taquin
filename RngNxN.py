@@ -46,6 +46,7 @@ def choixMouvement(list):
     plusCourt = testSucc(taquin,list[0])
     meilleurMouv = list[0]
     for s in range(0,len(list)):
+        print(testSucc(taquin,list[s]))
         if testSucc(taquin,list[s]) < plusCourt:
             meilleurMouv = list[s]
             plusCourt = testSucc(taquin,list[s])
@@ -100,6 +101,7 @@ print("position trou : ", taquin.index(trou))
 print("taille : ", n)
 print("taille max recherche : ",profondeurRecherche)
 print(legalMoove(taquin))
+print(choixMouvement(legalMoove(taquin)))
 
 def afficherTaquin():
     tab1 = []
