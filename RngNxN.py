@@ -43,7 +43,13 @@ def legalMoove(tab):
         return [-3, -1, 1, 3]
 
 def choixMouvement(list):
-    return random.choice(list)
+    plusCourt = testSucc(taquin,list[0])
+    meilleurMouv = list[0]
+    for s in range(0,len(list)):
+        if testSucc(taquin,list[s]) < meilleurMouv:
+            meilleurMouv = list[s]
+            plusCourt = testSucc(taquin,list[s])
+    return meilleurMouv
 
 def swapPositions(list, pos1, pos2):
     list[pos1], list[pos2] = list[pos2], list[pos1]
@@ -65,10 +71,8 @@ def SommeDist(list):
 def testSucc(list, mouv):
     tab = list.copy()
     posX = tab.index(trou)
-    print(tab)
     swapPositions(tab, posX, mouv + posX)
-    print(tab)
-    return SommeDist(tab)
+    return SommeDist(tab) + nombreElemOk(tab)
 
 def distOrigine(nb):
     target = (nb - 1)
@@ -97,15 +101,30 @@ print("taille : ", n)
 print("taille max recherche : ",profondeurRecherche)
 print(legalMoove(taquin))
 
-print(testSucc(taquin,legalMoove(taquin)[0]))
-print(testSucc(taquin,legalMoove(taquin)[1]))
+def afficherTaquin():
+    tab1 = []
+    tab2 = []
+    tab3 = []
 
+    tab1.append(taquin[0])
+    tab1.append(taquin[1])
+    tab1.append(taquin[2])
+    tab2.append(taquin[3])
+    tab2.append(taquin[4])
+    tab2.append(taquin[5])
+    tab3.append(taquin[6])
+    tab3.append(taquin[7])
+    tab3.append(taquin[8])
 
+    print(tab1)
+    print(tab2)
+    print(tab3)
+    print()
 
 for s in range(0, 700000):
 
     while nombreElemOk(taquin) != len(taquin):
-
+        afficherTaquin()
         posX = taquin.index(trou)
         mouvementPossible = legalMoove(taquin)
 
