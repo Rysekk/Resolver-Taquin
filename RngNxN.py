@@ -21,7 +21,7 @@ profondeurRecherche = 30
 
 
 
-def legalMoove(tab):
+def legalMoove(tab): # renvoi une liste de mouvements possible en fonction de la position du trou 
     index = tab.index(trou)
     if index == 0:  # coin haut gauche
         return [1, 3]
@@ -42,7 +42,7 @@ def legalMoove(tab):
     else:  # centre
         return [-3, -1, 1, 3]
 
-def choixMouvement(list):
+def choixMouvement(list): # choix meilleurs mouvement entre h1 et h2 
     plusCourt = testSucc(taquin,list[0])
     meilleurMouv = list[0]
     for s in range(0,len(list)):
@@ -56,20 +56,20 @@ def swapPositions(list, pos1, pos2):
     list[pos1], list[pos2] = list[pos2], list[pos1]
     return list
 
-def nombreElemOk(list):
+def nombreElemOk(list): #h2
     count = 0
     for s in range(0, len(list)):
         if s+1 == list[s]:
             count += 1
     return count
 
-def SommeDist(list):
+def SommeDist(list): #h1
     somme = 0
     for s in range(0,len(list)):
         somme += distOrigine(list[s])
     return somme
 
-def testSucc(list, mouv):
+def testSucc(list, mouv): #test h1 + h2 
     tab = list.copy()
     posX = tab.index(trou)
     swapPositions(tab, posX, mouv + posX)
