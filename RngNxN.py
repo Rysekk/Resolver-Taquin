@@ -5,7 +5,7 @@ trou = 9
 
 taquin = [1,2,3,
           4,5,6,
-          7,8,9]
+          9,7,8]
 
 taquinTampon = taquin.copy()
 
@@ -65,7 +65,10 @@ def SommeDist(list):
 def testSucc(list, mouv):
     tab = list.copy()
     posX = tab.index(trou)
-    return SommeDist(swapPositions(tab,posX,mouv+posX))
+    print(tab)
+    swapPositions(tab, posX, mouv + posX)
+    print(tab)
+    return SommeDist(tab)
 
 def distOrigine(nb):
     target = (nb - 1)
@@ -93,9 +96,9 @@ print("position trou : ", taquin.index(trou))
 print("taille : ", n)
 print("taille max recherche : ",profondeurRecherche)
 print(legalMoove(taquin))
+
 print(testSucc(taquin,legalMoove(taquin)[0]))
 print(testSucc(taquin,legalMoove(taquin)[1]))
-print(testSucc(taquin,legalMoove(taquin)[2]))
 
 
 
