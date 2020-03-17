@@ -1,9 +1,12 @@
 import random
 import math
 
-trou = 8
+trou = 9
 
-taquin = [0,1,2,3,4,5,6,trou,7,9,10,11,12,13,14,15]
+taquin = [1,2,3,4,
+          5,6,7,8,
+          9,10,11,12,
+          13,14,16,15]
 
 taquinTampon = taquin.copy()
 
@@ -50,9 +53,39 @@ def swapPositions(list, pos1, pos2):
 def nombreElemOk(list):
     count = 0
     for s in range(0, len(list)):
-        if s == list[s]:
+        if s+1 == list[s]:
             count += 1
     return count
+
+def SommeDist(list):
+    somme = 0
+    for s in range(0,len(list)):
+        somme += distOrigine(list[s])
+    return somme
+
+def testSucc(list, mouv):
+    tab = list.copy()
+    posX = tab.index(trou)
+    return SommeDist(swapPositions(tab,posX,mouv+posX))
+
+def distOrigine(nb):
+    target = (nb - 1)
+    pos = taquin.index(nb)
+    dist = 0
+    if pos == target:
+        return dist
+    elif pos < target:
+        while target - 3 > pos:
+            dist += 1
+            target -= 3
+        dist += abs(pos - target)
+        return dist
+    elif pos > target:
+        while pos - 3 > target:
+            dist += 1
+            pos -= 3
+        dist += abs(pos - target)
+        return dist
 
 print("taquin : ",taquin)
 print("nombre elem ok : ",nombreElemOk(taquin))
@@ -60,6 +93,12 @@ print("trou : ", trou)
 print("position trou : ", taquin.index(trou))
 print("taille : ", n)
 print("taille max recherche : ",profondeurRecherche)
+print(legalMoove(taquin))
+print(testSucc(taquin,legalMoove(taquin)[0]))
+print(testSucc(taquin,legalMoove(taquin)[1]))
+print(testSucc(taquin,legalMoove(taquin)[2]))
+
+
 
 for s in range(0, 700000):
 
