@@ -46,7 +46,7 @@ def choixMouvement(list):
     plusCourt = testSucc(taquin,list[0])
     meilleurMouv = list[0]
     for s in range(0,len(list)):
-        if testSucc(taquin,list[s]) < meilleurMouv:
+        if testSucc(taquin,list[s]) < plusCourt:
             meilleurMouv = list[s]
             plusCourt = testSucc(taquin,list[s])
     return meilleurMouv
@@ -124,7 +124,6 @@ def afficherTaquin():
 for s in range(0, 700000):
 
     while nombreElemOk(taquin) != len(taquin):
-        afficherTaquin()
         posX = taquin.index(trou)
         mouvementPossible = legalMoove(taquin)
 
