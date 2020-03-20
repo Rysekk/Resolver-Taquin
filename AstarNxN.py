@@ -69,7 +69,7 @@ def distOrigine(nb):
         dist += abs(pos - target)
         return dist
 
-def SommeDist(list): #h1
+def sommeDist(list): #h1
     somme = 0
     for s in range(0,len(list)):
         somme += distOrigine(list[s])
@@ -113,7 +113,7 @@ class noeud:
                         break
         if self.generation >= 1:
             frontiere.remove(self)
-            
+
     def etatBut(self):
         if desordre(self.tab) == 0:
             return True
