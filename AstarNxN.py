@@ -3,9 +3,9 @@ import math
 
 trou = 9
 
-taquin = [9,1,3,
-          4,2,5,
-          7,8,6]
+taquin = [4,5,1,
+          7,9,2,
+          8,6,3]
 
 n = math.sqrt(len(taquin))
 
@@ -92,6 +92,8 @@ class noeud:
         return self.heuristic
     def getTaquin(self):
         return self.tab
+    def getPere(self):
+        return  self.pere
     def getMouv(self):
         return self.mouvement
     def getGeneration(self):
@@ -107,10 +109,17 @@ class noeud:
             if frontiere == []:
                 frontiere.append(nouveauNoeud)
             else:
+                x = False
                 for s in range(0,len(frontiere)):
                     if frontiere[s].getH() >= nouveauNoeud.getH():
                         frontiere.insert(s,nouveauNoeud)
+                        x = True
                         break
+                if x == False:
+                    frontiere.append(nouveauNoeud)
+
+
+
         if self.getGeneration() >= 1:
             frontiere.remove(self)
 
@@ -125,10 +134,24 @@ class noeud:
 root = noeud(taquin,[], None, -1)
 root.expend()
 
-print(root.getTaquin())
+print("root : ",root.getTaquin())
+
 while frontiere[0].etatBut() != True:
-    print(frontiere[0].getTaquin())
+    print()
+    for s in range(0,len(frontiere)):
+        print("frontière : ",frontiere[s].getTaquin(), " heuristic : " ,frontiere[s].getH(), " gen : ", frontiere[s].getGeneration())
     frontiere[0].expend()
-print(frontiere[0].getTaquin())
 
+print()
+for s in range(0,len(frontiere)):
+    print("frontière :", frontiere[s].getTaquin(), " heuristic : " ,frontiere[s].getH(), " gen : ", frontiere[s].getGeneration())
 
+mouvements = []
+noeud = frontiere[0]
+while noeud.getGeneration() != 1:
+    mouvements.append(noeud.getPere().getMouv())
+    noeud = noeud.getPere()
+
+print()
+mouvements.reverse()
+print(mouvements)
