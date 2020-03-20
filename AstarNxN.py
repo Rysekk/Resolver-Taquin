@@ -126,10 +126,9 @@ class noeud:
                     if frontiere[s].h() >= nouveauNoeud.h():
                         frontiere.insert(s,nouveauNoeud)
                         break
-        explorer.append(self)
         if self.generation >= 1:
             frontiere.remove(self)
-
+            
     def etatBut(self):
         if desordre(self.tab) == 0:
             return True
