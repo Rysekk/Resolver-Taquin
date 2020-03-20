@@ -126,22 +126,39 @@ class arbre:
 frontiere = []
 
 class noeud:
+
     def __init__(self, list, nbSwap):
         self.tab = list
         self.nb = nbSwap
+        self.mouv = []
         self.heuristic = desordre(self.tab) + self.nb
+
+    def addValue(self,mouv):
+        self.mouv.append(mouv)
+        print("self.move : ", self.mouv)
+        
     def h(self):
         return self.heuristic
+
     def taquin(self):
         return self.tab
+
     def expend(self):
         mouvementPossible = legalMoove(self.tab)
         for s in range(0, len(mouvementPossible)):
             tab = self.tab.copy()
             posX = tab.index(trou)
             mouv = mouvementPossible[s]
+            print("mouv : ", mouv)
             swapPositions(tab, posX, mouv + posX)
-            frontiere.append(noeud(tab, nbSwap))
+            node = noeud(tab, nbSwap)
+            node.addValue(mouv)
+            node.addValue(mouv)
+            frontiere.append(node)
+            
+
+    
+
 
 nbSwap = 0
 
@@ -162,3 +179,4 @@ frontiere[1].expend()
 
 print(frontiere[2].taquin())
 print(frontiere[2].h())
+
