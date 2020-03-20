@@ -30,15 +30,6 @@ def legalMoove(tab): # renvoi une liste de mouvements possible en fonction de la
     else:  # centre
         return [-3, -1, 1, 3]
 
-def choixMouvement(list): # choix meilleurs mouvement
-    plusCourt = testSucc(taquin,list[0])
-    meilleurMouv = list[0]
-    for s in range(0,len(list)):
-        if testSucc(taquin,list[s]) < plusCourt:
-            meilleurMouv = list[s]
-            plusCourt = testSucc(taquin,list[s])
-    return meilleurMouv
-
 def swapPositions(list, pos1, pos2):
     list[pos1], list[pos2] = list[pos2], list[pos1]
     return list
@@ -83,12 +74,6 @@ def SommeDist(list): #h1
     for s in range(0,len(list)):
         somme += distOrigine(list[s])
     return somme
-
-class arbre:
-
-    def __init__(self):
-        self.nbSwap = 0
-        self.frontiere = []
 
 frontiere = []
 explorer = []
