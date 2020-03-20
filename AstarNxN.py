@@ -3,9 +3,9 @@ import math
 
 trou = 9
 
-taquin = [1,2,3,
-          4,5,6,
-          9,7,8]
+taquin = [9,1,3,
+          4,2,5,
+          7,8,6]
 
 n = math.sqrt(len(taquin))
 
@@ -84,12 +84,6 @@ def SommeDist(list): #h1
         somme += distOrigine(list[s])
     return somme
 
-def testSucc(list, mouv): #test h1 + h2
-    tab = list.copy()
-    posX = tab.index(trou)
-    swapPositions(tab, posX, mouv + posX)
-    return SommeDist(tab) + nombreElemOk(tab) + inversion(tab)
-
 class arbre:
 
     def __init__(self):
@@ -101,13 +95,12 @@ explorer = []
 
 class noeud:
     mouvement = []
-    def __init__(self, list, nbSwap , mouv, pere, generation):
+    def __init__(self, list , mouv, pere, generation):
         self.tab = list
-        self.nb = nbSwap
         self.pere = pere
         self.mouvement = mouv
         self.generation = generation+1
-        self.heuristic = desordre(self.tab) + self.nb + self.generation
+        self.heuristic = desordre(self.tab) + self.generation
     def __repr__(self):
         print(str(self.h()))
     def h(self):
@@ -125,7 +118,7 @@ class noeud:
             posX = tab.index(trou)
             mouv = mouvementPossible[s]
             swapPositions(tab, posX, mouv + posX)
-            nouveauNoeud = noeud(tab, nbSwap, mouv, self, self.generation)
+            nouveauNoeud = noeud(tab, mouv, self, self.generation)
             if frontiere == []:
                 frontiere.append(nouveauNoeud)
             else:
@@ -145,21 +138,13 @@ class noeud:
     def getPere(self):
         return self.pere
 
-
-nbSwap = 0
-root = noeud(taquin,nbSwap,[], None, -1)
+root = noeud(taquin,[], None, -1)
 root.expend()
-print("racine : ", root.taquin(), " heuristique : ", root.h(), " gen :", root.getGeneration())
-print()
-for s in range(0,len(frontiere)):
-    print("frontière : ",frontiere[s].taquin(), " heuristique : ", frontiere[s].h(), " gen :" , frontiere[s].getGeneration())
 
-frontiere[0].expend()
+print(root.taquin())
+while frontiere[0].etatBut() != True:
+    print(frontiere[0].taquin())
+    frontiere[0].expend()
+print(frontiere[0].taquin())
 
-print()
-for s in range(0,len(frontiere)):
-    print("frontière : ", frontiere[s].taquin(), " heuristique : ", frontiere[s].h(), " gen : ", frontiere[s].getGeneration())
 
-print()
-for s in range(0,len(explorer)):
-    print("explorée : ",explorer[s].taquin(), " heuristique : ", explorer[s].h(), " gen : ", explorer[s].getGeneration())
