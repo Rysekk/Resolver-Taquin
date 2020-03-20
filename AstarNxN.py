@@ -85,7 +85,7 @@ class noeud:
         self.pere = pere
         self.mouvement = mouv
         self.generation = generation+1
-        self.heuristic = desordre(self.tab) + self.generation
+        self.heuristic = desordre(self.tab) + self.generation + inversion(self.tab)
     def __repr__(self):
         print(str(self.h()))
     def getH(self):
