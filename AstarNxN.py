@@ -88,11 +88,11 @@ class noeud:
         self.heuristic = desordre(self.tab) + self.generation
     def __repr__(self):
         print(str(self.h()))
-    def h(self):
+    def getH(self):
         return self.heuristic
-    def taquin(self):
+    def getTaquin(self):
         return self.tab
-    def mouv(self):
+    def getMouv(self):
         return self.mouvement
     def getGeneration(self):
         return self.generation
@@ -108,10 +108,10 @@ class noeud:
                 frontiere.append(nouveauNoeud)
             else:
                 for s in range(0,len(frontiere)):
-                    if frontiere[s].h() >= nouveauNoeud.h():
+                    if frontiere[s].getH() >= nouveauNoeud.getH():
                         frontiere.insert(s,nouveauNoeud)
                         break
-        if self.generation >= 1:
+        if self.getGeneration() >= 1:
             frontiere.remove(self)
 
     def etatBut(self):
@@ -125,10 +125,10 @@ class noeud:
 root = noeud(taquin,[], None, -1)
 root.expend()
 
-print(root.taquin())
+print(root.getTaquin())
 while frontiere[0].etatBut() != True:
-    print(frontiere[0].taquin())
+    print(frontiere[0].getTaquin())
     frontiere[0].expend()
-print(frontiere[0].taquin())
+print(frontiere[0].getTaquin())
 
 
