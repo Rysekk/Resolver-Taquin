@@ -7,14 +7,9 @@ taquin = [1,2,3,
           4,5,6,
           9,7,8]
 
-nbSwap = 0
+
 mouvementPrecedent = 0
 n = math.sqrt(len(taquin))
-
-coef1 = 2
-coef2 = 2
-coef3 = 4
-
 
 def legalMoove(tab): # renvoi une liste de mouvements possible en fonction de la position du trou
     index = tab.index(trou)
@@ -59,7 +54,7 @@ def inversion(list):
                     sum += 1
     return sum
 
-def nombreElemOk(list): #h2
+def desordre(list): #h2
     count = len(taquin)
     for s in range(0, len(list)):
         if s+1 == list[s]:
@@ -119,22 +114,26 @@ def afficherTaquin():
 
 
 chemin = []
+
+
+class arbre:
+
+    def __init__(self):
+        self.nbSwap = 0
+        self.frontiere = []
+
+
 frontiere = []
 
-
 class noeud:
-
     def __init__(self, list, nbSwap):
         self.tab = list
         self.nb = nbSwap
-        self.heuristic = SommeDist(self.tab) + nombreElemOk(self.tab) + inversion(self.tab) + self.nb
-
+        self.heuristic = desordre(self.tab) + self.nb
     def h(self):
         return self.heuristic
-
     def taquin(self):
         return self.tab
-
     def expend(self):
         mouvementPossible = legalMoove(self.tab)
         for s in range(0, len(mouvementPossible)):
@@ -142,19 +141,24 @@ class noeud:
             posX = tab.index(trou)
             mouv = mouvementPossible[s]
             swapPositions(tab, posX, mouv + posX)
-            frontiere.append(noeud(tab,nbSwap))
+            frontiere.append(noeud(tab, nbSwap))
 
-
-
-
+nbSwap = 0
 
 root = noeud(taquin,nbSwap)
+print(root.taquin())
 print(root.h())
 root.expend()
 
 
+
+
 for s in range(0,len(frontiere)):
-    print(frontiere[s].h)
+    print(frontiere[s].taquin())
+    print(frontiere[s].h())
+
+frontiere[1].expend()
 
 
-
+print(frontiere[2].taquin())
+print(frontiere[2].h())
