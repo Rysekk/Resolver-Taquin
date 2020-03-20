@@ -3,9 +3,9 @@ import math
 
 trou = 9
 
-taquin = [4,5,1,
-          7,9,2,
-          8,6,3]
+taquin = [9,3,6,
+          1,2,8,
+          4,7,5]
 
 n = math.sqrt(len(taquin))
 
