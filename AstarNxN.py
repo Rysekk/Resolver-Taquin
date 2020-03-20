@@ -3,9 +3,9 @@ import math
 
 trou = 9
 
-taquin = [2,9,6,
-          3,7,8,
-          1,4,5]
+taquin = [4,1,6,
+          9,7,8,
+          2,3,5]
 
 n = math.sqrt(len(taquin))
 
@@ -145,6 +145,7 @@ while noeud.getGeneration() != 1:
     mouvements.append(noeud.getPere().getMouv())
     noeud = noeud.getPere()
 
+
 print()
 mouvements.reverse()
-print(mouvements)
+print(mouvements, " taille : ", len(mouvements))
