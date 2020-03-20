@@ -3,9 +3,9 @@ import math
 
 trou = 9
 
-taquin = [9,3,6,
-          1,2,8,
-          4,7,5]
+taquin = [2,9,6,
+          3,7,8,
+          1,4,5]
 
 n = math.sqrt(len(taquin))
 
@@ -137,14 +137,7 @@ root.expend()
 print("root : ",root.getTaquin())
 
 while frontiere[0].etatBut() != True:
-    print()
-    for s in range(0,len(frontiere)):
-        print("frontière : ",frontiere[s].getTaquin(), " heuristic : " ,frontiere[s].getH(), " gen : ", frontiere[s].getGeneration())
     frontiere[0].expend()
-
-print()
-for s in range(0,len(frontiere)):
-    print("frontière :", frontiere[s].getTaquin(), " heuristic : " ,frontiere[s].getH(), " gen : ", frontiere[s].getGeneration())
 
 mouvements = []
 noeud = frontiere[0]
