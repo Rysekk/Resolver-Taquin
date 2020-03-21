@@ -1,54 +1,43 @@
-import random
 import math
+import random
 
-trou = 9
-taquin = [5,2,9,
-          7,1,3,
-          4,8,6]
+trou = 0
+taquin = [1,8,4,3,7,6,2,0,5]
 
 frontiere = []
 explorer = []
 goal_state = [0,1,2,3,4,5,6,7,8]
-n = math.sqrt(len(taquin))
+n = 3
 
-def legalMoove(tab): # renvoi une liste de mouvements possible en fonction de la position du trou
-    index = tab.index(trou)
-    if index == 0:  # coin haut gauche
+def legalMoove(tab):
+    index = tab.index(0)
+    if index == 0:
         return [1, 3]
-    if index == (n - 1):  # coin haut droit
-        return [-1, 3]
-    if index == ((n * n) - 1) - (n - 1):  # coin bas gauche
-        return [-3, 1]
-    if index == (n * n) - 1:  # coin bas droit
-        return [-3, -1]
-    if 0 < index < (n - 1):  # bordure haute
+    if index == 1:
         return [-1, 3, 1]
-    if ((n * n) - 1) - (n - 1) < index < (n * n) - 1:  # bordure basse
-        return [-3, -1, 1]
-    if index % n == 0:  # bordure gauche
+    if index == 2:
+        return [-1, 3]
+    if index == 3:
         return [-3, 1, 3]
-    if index % n == (n - 1):  # bordure droite
-        return [-3, -1, 3]
-    else:  # centre
+    if index == 4:
         return [-3, -1, 1, 3]
+    if index == 5:
+        return [-3, -1, 3]
+    if index == 6:
+        return [-3, 1]
+    if index == 7:
+        return [-3, -1, 1]
+    if index == 8:
+        return [-3, -1]
 
 def swapPositions(list, pos1, pos2):
     list[pos1], list[pos2] = list[pos2], list[pos1]
     return list
 
-def inversion(list):
-    sum = 0
-    for s in range(0,len(list)):
-        for i in range(s+1,len(list)):
-            if list[s] > list[i]:
-                if list[s] != 9:
-                    sum += 1
-    return sum
-
 def desordre(list): #h2
     count = len(taquin)
     for s in range(0, len(list)):
-        if s+1 == list[s]:
+        if s == list[s]:
             count -= 1
     return count
 
@@ -70,7 +59,7 @@ def afficherTaquin(list):
     print(tab3)
     print()
 
-def calculateManhattan(initial_state):
+def manhattan(initial_state):
     initial_config = initial_state
     manDict = 0
     for i,item in enumerate(initial_config):
@@ -81,12 +70,15 @@ def calculateManhattan(initial_state):
 
 class noeud:
     mouvement = []
-    def __init__(self, list , mouv, pere, generation):
+    def __init__(self, list , mouv, prec, pere, generation):
         self.tab = list
         self.pere = pere
+        self.prec = prec
         self.mouvement = mouv
         self.generation = generation+1
-        self.heuristic = desordre(self.tab) + self.generation + inversion(self.tab) + calculateManhattan(self.tab)
+        self.des = desordre(self.tab)
+        self.man = manhattan(self.tab)
+        self.heuristic = self.generation + self.man
     def getH(self):
         return self.heuristic
     def getTaquin(self):
@@ -98,7 +90,7 @@ class noeud:
     def getGeneration(self):
         return self.generation
     def etatBut(self):
-        if desordre(self.tab) == 0:
+        if self.des == 0:
             return True
         else:
             False
@@ -106,41 +98,75 @@ class noeud:
         return self.pere
     def expend(self):
         mouvementPossible = legalMoove(self.tab)
+
+        if self.getGeneration() > 1:
+            try :
+                pass
+                 #mouvementPossible.remove(self.prec*-1)
+            except:
+                pass
+
         for s in range(0, len(mouvementPossible)):
             tab = self.tab.copy()
             posX = tab.index(trou)
             mouv = mouvementPossible[s]
+
             swapPositions(tab, posX, mouv + posX)
-            nouveauNoeud = noeud(tab, mouv, self, self.generation)
+            nouveauNoeud = noeud(tab, mouv, self.mouvement, self, self.generation)
+
             if frontiere == []:
                 frontiere.append(nouveauNoeud)
             else:
                 x = False
+                y = False
+
+                 ### CHECK SI TAQUIN EXISTE DANS LA FRONTIERE ###
                 for s in range(0,len(frontiere)):
-                    if frontiere[s].getH() >= nouveauNoeud.getH():
+                    if nouveauNoeud.getTaquin() == frontiere[s].getTaquin():
+                        x = True
+                        y = True
+                        break
+
+                ### PLACER TAQUIN DANS LA FRONTIERE AU BON ENDROIT ###
+                for s in range(0, len(frontiere)):
+                    if (frontiere[s].getH() >= nouveauNoeud.getH()) & (y == False):
                         frontiere.insert(s,nouveauNoeud)
                         x = True
                         break
-                if x == False:
+
+                ### AJOUTER A LA FIN ###
+                if x == False & y == False:
                     frontiere.append(nouveauNoeud)
+
         explorer.append(self)
         if self.getGeneration() >= 1:
             frontiere.remove(self)
 
 
-root = noeud(taquin,[], None, -1)
+root = noeud(taquin,[], None, None, -1)
 root.expend()
 
+
 while frontiere[0].etatBut() != True:
-    frontiere[0].expend()
+    best = frontiere[0].getH()
+    count = []
+
+    for s in range(0, len(frontiere)):
+        if frontiere[s].getH() == best:
+            count.append(s)
+    RNGESUS = random.choice(count)
+    frontiere[RNGESUS].expend()
+
+### AFFICHAGE SOLUTION ###
 
 mouvements = []
 noeud = frontiere[0]
-while noeud.getGeneration() != 1:
-    mouvements.append(noeud.getPere().getMouv())
+while noeud.getGeneration() != 0:
+    mouvements.append(noeud.getMouv())
     afficherTaquin(noeud.getTaquin())
     noeud = noeud.getPere()
-
+print()
+afficherTaquin(noeud.getTaquin())
 mouvements.reverse()
 print(mouvements, " taille : ", len(mouvements))
 print("Taille de la frontière : ", len(frontiere))
