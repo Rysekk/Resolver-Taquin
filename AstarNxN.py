@@ -3,9 +3,9 @@ import math
 
 trou = 9
 
-taquin = [1,2,3,
-          5,7,6,
-          4,8,9]
+taquin = [5,2,9,
+          7,1,3,
+          4,8,6]
 
 frontiere = []
 explorer = []
@@ -53,6 +53,24 @@ def desordre(list): #h2
         if s+1 == list[s]:
             count -= 1
     return count
+
+def afficherTaquin(list):
+    tab1 = []
+    tab2 = []
+    tab3 = []
+    tab1.append(list[0])
+    tab1.append(list[1])
+    tab1.append(list[2])
+    tab2.append(list[3])
+    tab2.append(list[4])
+    tab2.append(list[5])
+    tab3.append(list[6])
+    tab3.append(list[7])
+    tab3.append(list[8])
+    print(tab1)
+    print(tab2)
+    print(tab3)
+    print()
 
 def calculateManhattan(initial_state):
     initial_config = initial_state
@@ -118,27 +136,16 @@ class noeud:
 root = noeud(taquin,[], None, -1)
 root.expend()
 
-print("root : ",root.getTaquin())
-
 while frontiere[0].etatBut() != True:
-    print()
-    for s in range(0, len(frontiere)):
-        print("frontière : ", frontiere[s].getTaquin(), " heuristic : ", frontiere[s].getH(), " gen : ",
-              frontiere[s].getGeneration())
     frontiere[0].expend()
-
-print()
-for s in range(0,len(frontiere)):
-        print("frontière : ",frontiere[s].getTaquin(), " heuristic : " ,frontiere[s].getH(), " gen : ", frontiere[s].getGeneration())
 
 mouvements = []
 noeud = frontiere[0]
 while noeud.getGeneration() != 1:
     mouvements.append(noeud.getPere().getMouv())
+    afficherTaquin(noeud.getTaquin())
     noeud = noeud.getPere()
 
-
-print()
 mouvements.reverse()
 print(mouvements, " taille : ", len(mouvements))
 print("Taille de la frontière : ", len(frontiere))
