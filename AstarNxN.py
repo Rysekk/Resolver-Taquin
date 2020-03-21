@@ -2,7 +2,7 @@ import math
 import random
 
 trou = 0
-taquin = [1,8,4,3,7,6,2,0,5]
+taquin = [3,1,8,4,5,6,2,7,0]
 
 frontiere = []
 explorer = []
@@ -98,15 +98,8 @@ class noeud:
         return self.pere
     def expend(self):
         mouvementPossible = legalMoove(self.tab)
-
-        if self.getGeneration() > 1:
-            try :
-                pass
-                 #mouvementPossible.remove(self.prec*-1)
-            except:
-                pass
-
         for s in range(0, len(mouvementPossible)):
+
             tab = self.tab.copy()
             posX = tab.index(trou)
             mouv = mouvementPossible[s]
@@ -138,6 +131,7 @@ class noeud:
                 if x == False & y == False:
                     frontiere.append(nouveauNoeud)
 
+        ## AJOUTER A LA LISTE DES EXPLORER ET RETIRE DE LA FRONTIERE ##
         explorer.append(self)
         if self.getGeneration() >= 1:
             frontiere.remove(self)
@@ -145,7 +139,6 @@ class noeud:
 
 root = noeud(taquin,[], None, None, -1)
 root.expend()
-
 
 while frontiere[0].etatBut() != True:
     best = frontiere[0].getH()
@@ -163,7 +156,6 @@ mouvements = []
 noeud = frontiere[0]
 while noeud.getGeneration() != 0:
     mouvements.append(noeud.getMouv())
-    afficherTaquin(noeud.getTaquin())
     noeud = noeud.getPere()
 print()
 afficherTaquin(noeud.getTaquin())
