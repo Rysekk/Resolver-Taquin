@@ -3,10 +3,14 @@ import math
 
 trou = 9
 
-taquin = [4,1,6,
-          9,7,8,
-          2,3,5]
+taquin = [1,2,3,
+          5,7,6,
+          4,8,9]
 
+frontiere = []
+explorer = []
+
+goal_state = [0,1,2,3,4,5,6,7,8]
 n = math.sqrt(len(taquin))
 
 def legalMoove(tab): # renvoi une liste de mouvements possible en fonction de la position du trou
@@ -50,33 +54,14 @@ def desordre(list): #h2
             count -= 1
     return count
 
-def distOrigine(nb):
-    target = (nb - 1)
-    pos = taquin.index(nb)
-    dist = 0
-    if pos == target:
-        return dist
-    elif pos < target:
-        while target - 3 >= pos:
-            dist += 1
-            target -= 3
-        dist += abs(pos - target)
-        return dist
-    elif pos > target:
-        while pos - 3 >= target:
-            dist += 1
-            pos -= 3
-        dist += abs(pos - target)
-        return dist
-
-def sommeDist(list): #h1
-    somme = 0
-    for s in range(0,len(list)):
-        somme += distOrigine(list[s])
-    return somme
-
-frontiere = []
-explorer = []
+def calculateManhattan(initial_state):
+    initial_config = initial_state
+    manDict = 0
+    for i,item in enumerate(initial_config):
+        prev_row,prev_col = int(i/ 3) , i % 3
+        goal_row,goal_col = int(item /3),item % 3
+        manDict += abs(prev_row-goal_row) + abs(prev_col - goal_col)
+    return manDict
 
 class noeud:
     mouvement = []
@@ -85,7 +70,7 @@ class noeud:
         self.pere = pere
         self.mouvement = mouv
         self.generation = generation+1
-        self.heuristic = desordre(self.tab) + self.generation + inversion(self.tab)
+        self.heuristic = desordre(self.tab) + self.generation + inversion(self.tab) + calculateManhattan(self.tab)
     def __repr__(self):
         print(str(self.h()))
     def getH(self):
@@ -117,8 +102,7 @@ class noeud:
                         break
                 if x == False:
                     frontiere.append(nouveauNoeud)
-
-
+        explorer.append(self)
 
         if self.getGeneration() >= 1:
             frontiere.remove(self)
@@ -137,7 +121,15 @@ root.expend()
 print("root : ",root.getTaquin())
 
 while frontiere[0].etatBut() != True:
+    print()
+    for s in range(0, len(frontiere)):
+        print("frontière : ", frontiere[s].getTaquin(), " heuristic : ", frontiere[s].getH(), " gen : ",
+              frontiere[s].getGeneration())
     frontiere[0].expend()
+
+print()
+for s in range(0,len(frontiere)):
+        print("frontière : ",frontiere[s].getTaquin(), " heuristic : " ,frontiere[s].getH(), " gen : ", frontiere[s].getGeneration())
 
 mouvements = []
 noeud = frontiere[0]
@@ -149,3 +141,5 @@ while noeud.getGeneration() != 1:
 print()
 mouvements.reverse()
 print(mouvements, " taille : ", len(mouvements))
+print("Taille de la frontière : ", len(frontiere))
+print("Nombre de noeuds visité : ", len(explorer))
