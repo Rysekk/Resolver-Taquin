@@ -2,14 +2,12 @@ import random
 import math
 
 trou = 9
-
 taquin = [5,2,9,
           7,1,3,
           4,8,6]
 
 frontiere = []
 explorer = []
-
 goal_state = [0,1,2,3,4,5,6,7,8]
 n = math.sqrt(len(taquin))
 
@@ -89,8 +87,6 @@ class noeud:
         self.mouvement = mouv
         self.generation = generation+1
         self.heuristic = desordre(self.tab) + self.generation + inversion(self.tab) + calculateManhattan(self.tab)
-    def __repr__(self):
-        print(str(self.h()))
     def getH(self):
         return self.heuristic
     def getTaquin(self):
@@ -101,6 +97,13 @@ class noeud:
         return self.mouvement
     def getGeneration(self):
         return self.generation
+    def etatBut(self):
+        if desordre(self.tab) == 0:
+            return True
+        else:
+            False
+    def getPere(self):
+        return self.pere
     def expend(self):
         mouvementPossible = legalMoove(self.tab)
         for s in range(0, len(mouvementPossible)):
@@ -121,17 +124,9 @@ class noeud:
                 if x == False:
                     frontiere.append(nouveauNoeud)
         explorer.append(self)
-
         if self.getGeneration() >= 1:
             frontiere.remove(self)
 
-    def etatBut(self):
-        if desordre(self.tab) == 0:
-            return True
-        else:
-            False
-    def getPere(self):
-        return self.pere
 
 root = noeud(taquin,[], None, -1)
 root.expend()
