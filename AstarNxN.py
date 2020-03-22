@@ -1,8 +1,8 @@
 import math
 import random
-
+import time
 trou = 0
-taquin = [2,5,7,1,4,6,0,3,8]
+taquin = [2, 3, 7, 0, 6, 5, 1, 8, 4]
 
 frontiere = []
 explorer = []
@@ -146,7 +146,7 @@ class noeud:
         if self.getGeneration() >= 1:
             frontiere.remove(self)
 
-
+a = time.time()
 root = noeud(taquin,[], None, None, -1)
 root.expend()
 
@@ -159,7 +159,7 @@ while frontiere[0].etatBut() != True:
             count.append(s)
     RNGESUS = random.choice(count)
     frontiere[RNGESUS].expend()
-
+b = time.time()
 ### AFFICHAGE SOLUTION ###
 
 mouvements = []
@@ -173,3 +173,4 @@ mouvements.reverse()
 print(mouvements, " taille : ", len(mouvements))
 print("Taille de la frontière : ", len(frontiere))
 print("Nombre de noeuds visité : ", len(explorer))
+print("Temps de resolution du taquin : " , b-a)
