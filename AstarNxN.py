@@ -2,7 +2,7 @@ import math
 import random
 
 trou = 0
-taquin = [3,1,8,4,5,6,2,7,0]
+taquin = [2,5,7,1,4,6,0,3,8]
 
 frontiere = []
 explorer = []
@@ -41,6 +41,15 @@ def desordre(list): #h2
             count -= 1
     return count
 
+def inversion(list):
+    sum = 0
+    for s in range(0,len(list)):
+        for i in range(s+1,len(list)):
+            if list[s] > list[i]:
+                if list[s] != 9:
+                    sum += 1
+    return sum
+
 def afficherTaquin(list):
     tab1 = []
     tab2 = []
@@ -75,10 +84,11 @@ class noeud:
         self.pere = pere
         self.prec = prec
         self.mouvement = mouv
+        self.inv = inversion(self.tab)
         self.generation = generation+1
         self.des = desordre(self.tab)
         self.man = manhattan(self.tab)
-        self.heuristic = self.generation + self.man
+        self.heuristic = self.generation + self.man + self.inv
     def getH(self):
         return self.heuristic
     def getTaquin(self):
