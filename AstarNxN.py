@@ -5,11 +5,10 @@ import time
 ### UN DELTA DE 1 DONNE LE MEILLEUR CHEMIN ###
 ### UN DELTA DE 2 RETOURNE UN CHEMIN MOINS OPTI MAIS BIEN PLUS RAPIDEMENT ###
 
-delta = 1
+delta = 2
 
 trou = 0
 taquin = [0,1,5,3,6,4,2,8,7]
-nbSwap = 0
 
 frontiere = []
 explorer = []
@@ -43,9 +42,7 @@ def legalMoove(tab): # renvoi une liste de mouvements possible en fonction de la
         return [-3, -1, 1, 3]
 
 def swapPositions(list, pos1, pos2):
-    global nbSwap
     list[pos1], list[pos2] = list[pos2], list[pos1]
-    nbSwap += 1
     return list
 
 def desordre(list): #h2
@@ -157,9 +154,10 @@ print("root : ", taquin)
 print("but : ", goal_state)
 print("Nombre de tuiles mal placé : ", desordre(noeud.getTaquin()))
 print("taille : ", n, "x", n)
+print("Delta : ", delta)
 print("Chemin : ", mouvements)
 print("Taille solution : ", len(mouvements))
 print("Taille de la frontière : ", len(frontiere))
 print("Nombre de noeuds visité : ", len(explorer))
-print("Nombre de tuile déplacé : ", nbSwap)
+print("Nombre de tuile déplacé : ", len(frontiere) + len(explorer))
 print("Temps de resolution du taquin : " , b-a)
