@@ -94,6 +94,11 @@ class noeud:
         return self.pere
     def expend(self):
         mouvementPossible = legalMoove(self.tab)
+        try :
+            mouvementPossible.remove(self.mouvement * -1)
+        except :
+            pass
+
         for s in range(0, len(mouvementPossible)):
 
             tab = self.tab.copy()
