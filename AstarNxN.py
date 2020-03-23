@@ -1,79 +1,62 @@
 import math
 import random
 import time
+
 trou = 0
-taquin = [2, 3, 7, 0, 6, 5, 1, 8, 4]
+taquin = [8,7,3,4,5,2,0,1,6]
 
 frontiere = []
 explorer = []
-goal_state = [0,1,2,3,4,5,6,7,8]
-n = 3
+goal_state = []
 
-def legalMoove(tab):
-    index = tab.index(0)
-    if index == 0:
+n = math.sqrt(len(taquin))
+n = int(n)
+
+for s in range(0,n*n):
+    goal_state.append(s)
+
+print("root : ", taquin)
+print("but : ", goal_state)
+print("taille : ", n, "x",n)
+
+def legalMoove(tab): # renvoi une liste de mouvements possible en fonction de la position du trou
+    index = tab.index(trou)
+    if index == 0:  # coin haut gauche
         return [1, 3]
-    if index == 1:
-        return [-1, 3, 1]
-    if index == 2:
+    if index == (n - 1):  # coin haut droit
         return [-1, 3]
-    if index == 3:
-        return [-3, 1, 3]
-    if index == 4:
-        return [-3, -1, 1, 3]
-    if index == 5:
-        return [-3, -1, 3]
-    if index == 6:
+    if index == ((n * n) - 1) - (n - 1):  # coin bas gauche
         return [-3, 1]
-    if index == 7:
-        return [-3, -1, 1]
-    if index == 8:
+    if index == (n * n) - 1:  # coin bas droit
         return [-3, -1]
+    if 0 < index < (n - 1):  # bordure haute
+        return [-1, 3, 1]
+    if ((n * n) - 1) - (n - 1) < index < (n * n) - 1:  # bordure basse
+        return [-3, -1, 1]
+    if index % n == 0:  # bordure gauche
+        return [-3, 1, 3]
+    if index % n == (n - 1):  # bordure droite
+        return [-3, -1, 3]
+    else:  # centre
+        return [-3, -1, 1, 3]
 
 def swapPositions(list, pos1, pos2):
     list[pos1], list[pos2] = list[pos2], list[pos1]
     return list
 
 def desordre(list): #h2
-    count = len(taquin)
+    count = len(list)
     for s in range(0, len(list)):
         if s == list[s]:
             count -= 1
     return count
 
-def inversion(list):
-    sum = 0
-    for s in range(0,len(list)):
-        for i in range(s+1,len(list)):
-            if list[s] > list[i]:
-                if list[s] != 9:
-                    sum += 1
-    return sum
-
-def afficherTaquin(list):
-    tab1 = []
-    tab2 = []
-    tab3 = []
-    tab1.append(list[0])
-    tab1.append(list[1])
-    tab1.append(list[2])
-    tab2.append(list[3])
-    tab2.append(list[4])
-    tab2.append(list[5])
-    tab3.append(list[6])
-    tab3.append(list[7])
-    tab3.append(list[8])
-    print(tab1)
-    print(tab2)
-    print(tab3)
-    print()
-
 def manhattan(initial_state):
     initial_config = initial_state
     manDict = 0
     for i,item in enumerate(initial_config):
-        prev_row,prev_col = int(i/ 3) , i % 3
-        goal_row,goal_col = int(item /3),item % 3
+        prev_row,prev_col = int(i/ n) , i % n
+        goal_row,goal_col = int(item /n),item % n
         manDict += abs(prev_row-goal_row) + abs(prev_col - goal_col)
     return manDict
 
@@ -84,11 +67,10 @@ class noeud:
         self.pere = pere
         self.prec = prec
         self.mouvement = mouv
-        self.inv = inversion(self.tab)
         self.generation = generation+1
         self.des = desordre(self.tab)
         self.man = manhattan(self.tab)
-        self.heuristic = self.generation + self.man + self.inv
+        self.heuristic = self.generation + self.man
     def getH(self):
         return self.heuristic
     def getTaquin(self):
@@ -103,7 +85,7 @@ class noeud:
         if self.des == 0:
             return True
         else:
-            False
+            return False
     def getPere(self):
         return self.pere
     def expend(self):
@@ -147,18 +129,18 @@ class noeud:
             frontiere.remove(self)
 
 a = time.time()
+
 root = noeud(taquin,[], None, None, -1)
 root.expend()
-
 while frontiere[0].etatBut() != True:
     best = frontiere[0].getH()
     count = []
-
     for s in range(0, len(frontiere)):
         if frontiere[s].getH() == best:
             count.append(s)
     RNGESUS = random.choice(count)
     frontiere[RNGESUS].expend()
+
 b = time.time()
 ### AFFICHAGE SOLUTION ###
 
@@ -167,10 +149,9 @@ noeud = frontiere[0]
 while noeud.getGeneration() != 0:
     mouvements.append(noeud.getMouv())
     noeud = noeud.getPere()
-print()
-afficherTaquin(noeud.getTaquin())
 mouvements.reverse()
-print(mouvements, " taille : ", len(mouvements))
+print("Chemin : ", mouvements)
+print("Taille solution : ", len(mouvements))
 print("Taille de la frontière : ", len(frontiere))
 print("Nombre de noeuds visité : ", len(explorer))
 print("Temps de resolution du taquin : " , b-a)
