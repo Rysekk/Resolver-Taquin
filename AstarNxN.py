@@ -98,47 +98,38 @@ class noeud:
             mouvementPossible.remove(self.mouvement * -1)
         except :
             pass
-
         for s in range(0, len(mouvementPossible)):
-
             tab = self.tab.copy()
             posX = tab.index(trou)
             mouv = mouvementPossible[s]
-
             swapPositions(tab, posX, mouv + posX)
             nouveauNoeud = noeud(tab, mouv, self.mouvement, self, self.generation)
-
             if frontiere == []:
                 frontiere.append(nouveauNoeud)
             else:
                 x = False
                 y = False
-
                 ### CHECK SI TAQUIN EXISTE DANS LA FRONTIERE ###
                 for s in range(0,len(frontiere)):
                     if nouveauNoeud.getTaquin() == frontiere[s].getTaquin():
                         x = True
                         y = True
                         break
-
                 ### PLACER TAQUIN DANS LA FRONTIERE AU BON ENDROIT ###
                 for s in range(0, len(frontiere)):
                     if (frontiere[s].getH() >= nouveauNoeud.getH()) & (y == False):
                         frontiere.insert(s,nouveauNoeud)
                         x = True
                         break
-
                 ### AJOUTER A LA FIN ###
                 if x == False & y == False:
                     frontiere.append(nouveauNoeud)
-
         ## AJOUTER A LA LISTE DES EXPLORER ET RETIRE DE LA FRONTIERE ##
         explorer.append(self)
         if self.getGeneration() >= 1:
             frontiere.remove(self)
 
 a = time.time()
-
 root = noeud(taquin,[], None, None, -1)
 root.expend()
 while frontiere[0].etatBut() != True:
@@ -152,10 +143,9 @@ while frontiere[0].etatBut() != True:
     RNGESUS = random.choice(count)
     ### PRAY FROR RNGESUS ###
     frontiere[RNGESUS].expend()
-
 b = time.time()
-### AFFICHAGE SOLUTION ###
 
+### AFFICHAGE SOLUTION ###
 mouvements = []
 noeud = frontiere[0]
 while noeud.getGeneration() != 0:
