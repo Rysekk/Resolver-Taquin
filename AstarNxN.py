@@ -2,8 +2,14 @@ import math
 import random
 import time
 
+### UN DELTA DE 1 DONNE LE MEILLEUR CHEMIN ###
+### UN DELTA DE 2 RETOURNE UN CHEMIN MOINS OPTI MAIS BIEN PLUS RAPIDEMENT ###
+
+delta = 1
+
 trou = 0
-taquin = [8,7,3,4,5,2,0,1,6]
+taquin = [0,1,5,3,6,4,2,8,7]
+nbSwap = 0
 
 frontiere = []
 explorer = []
@@ -14,10 +20,6 @@ n = int(n)
 
 for s in range(0,n*n):
     goal_state.append(s)
-
-print("root : ", taquin)
-print("but : ", goal_state)
-print("taille : ", n, "x",n)
 
 def legalMoove(tab): # renvoi une liste de mouvements possible en fonction de la position du trou
     index = tab.index(trou)
@@ -41,7 +43,9 @@ def legalMoove(tab): # renvoi une liste de mouvements possible en fonction de la
         return [-3, -1, 1, 3]
 
 def swapPositions(list, pos1, pos2):
+    global nbSwap
     list[pos1], list[pos2] = list[pos2], list[pos1]
+    nbSwap += 1
     return list
 
 def desordre(list): #h2
@@ -70,7 +74,7 @@ class noeud:
         self.generation = generation+1
         self.des = desordre(self.tab)
         self.man = manhattan(self.tab)
-        self.heuristic = self.generation + self.man
+        self.heuristic = self.generation + self.man*delta
     def getH(self):
         return self.heuristic
     def getTaquin(self):
@@ -105,7 +109,7 @@ class noeud:
                 x = False
                 y = False
 
-                 ### CHECK SI TAQUIN EXISTE DANS LA FRONTIERE ###
+                ### CHECK SI TAQUIN EXISTE DANS LA FRONTIERE ###
                 for s in range(0,len(frontiere)):
                     if nouveauNoeud.getTaquin() == frontiere[s].getTaquin():
                         x = True
@@ -138,7 +142,10 @@ while frontiere[0].etatBut() != True:
     for s in range(0, len(frontiere)):
         if frontiere[s].getH() == best:
             count.append(s)
+        else:
+            break
     RNGESUS = random.choice(count)
+    ### PRAY FROR RNGESUS ###
     frontiere[RNGESUS].expend()
 
 b = time.time()
@@ -150,8 +157,14 @@ while noeud.getGeneration() != 0:
     mouvements.append(noeud.getMouv())
     noeud = noeud.getPere()
 mouvements.reverse()
+
+print("root : ", taquin)
+print("but : ", goal_state)
+print("Nombre de tuiles mal placé : ", desordre(noeud.getTaquin()))
+print("taille : ", n, "x", n)
 print("Chemin : ", mouvements)
 print("Taille solution : ", len(mouvements))
 print("Taille de la frontière : ", len(frontiere))
 print("Nombre de noeuds visité : ", len(explorer))
+print("Nombre de tuile déplacé : ", nbSwap)
 print("Temps de resolution du taquin : " , b-a)
