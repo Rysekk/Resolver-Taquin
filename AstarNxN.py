@@ -5,15 +5,16 @@ import time
 ### UN DELTA DE 1 DONNE LE MEILLEUR CHEMIN ###
 ### UN DELTA DE 2 RETOURNE UN CHEMIN MOINS OPTI MAIS BIEN PLUS RAPIDEMENT ###
 
-delta = 2
-
+delta = 1
 trou = 0
-taquin = [0,1,5,3,6,4,2,8,7]
+
+taquin = [5, 3, 6, 2, 8, 7, 4, 1, 0]
+
+
 
 frontiere = []
 explorer = []
 goal_state = []
-
 n = math.sqrt(len(taquin))
 n = int(n)
 
@@ -91,10 +92,12 @@ class noeud:
         return self.pere
     def expend(self):
         mouvementPossible = legalMoove(self.tab)
+        
         try :
             mouvementPossible.remove(self.mouvement * -1)
         except :
             pass
+
         for s in range(0, len(mouvementPossible)):
             tab = self.tab.copy()
             posX = tab.index(trou)
@@ -153,6 +156,7 @@ mouvements.reverse()
 print("root : ", taquin)
 print("but : ", goal_state)
 print("Nombre de tuiles mal placé : ", desordre(noeud.getTaquin()))
+print("Distance de manhattan initial : ", manhattan(noeud.getTaquin()))
 print("taille : ", n, "x", n)
 print("Delta : ", delta)
 print("Chemin : ", mouvements)
