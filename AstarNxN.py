@@ -3,17 +3,19 @@ import random
 import time
 import bisect
 
-
 ### UN DELTA DE 1 DONNE LE MEILLEUR CHEMIN ###
 ### UN DELTA DE 2 RETOURNE UN CHEMIN MOINS OPTI MAIS BIEN PLUS RAPIDEMENT ###
-weight = 1
+weight = 0
 trou = 0
-taquin = [8,5,1,7,0,3,2,4,6]
+taquin = [6, 2, 7, 1, 0, 5, 4, 8, 3]
+
+
 frontiere = []
 explorer = []
 goal_state = []
 n = math.sqrt(len(taquin))
 n = int(n)
+
 for s in range(0, n * n):
     goal_state.append(s)
 
@@ -42,13 +44,6 @@ def swapPositions(list, pos1, pos2):
     list[pos1], list[pos2] = list[pos2], list[pos1]
     return list
 
-def desordre(list):  # h2
-    count = len(list)
-    for s in range(0, len(list)):
-        if s == list[s]:
-            count -= 1
-    return count
-
 def manhattan(initial_state):
     initial_config = initial_state
     manDict = 0
@@ -59,14 +54,12 @@ def manhattan(initial_state):
     return manDict
 
 class noeud:
-    mouvement = []
     def __init__(self, list, mouv, prec, pere, generation):
         self.tab = list
         self.pere = pere
         self.prec = prec
         self.mouvement = mouv
         self.generation = generation + 1
-        self.des = desordre(self.tab)
         self.man = manhattan(self.tab)
         self.heuristic = self.generation + (self.man * (1 + weight))
 
@@ -89,7 +82,7 @@ class noeud:
         return self.generation
 
     def etatBut(self):
-        if self.des == 0:
+        if self.man == 0:
             return True
         else:
             return False
@@ -109,18 +102,14 @@ class noeud:
             mouv = mouvementPossible[s]
             swapPositions(tab, posX, mouv + posX)
             nouveauNoeud = noeud(tab, mouv, self.mouvement, self, self.generation)
-            if frontiere == []:
-                frontiere.append(nouveauNoeud)
-            else:
-                idx = bisect.bisect(frontiere,nouveauNoeud)
-                frontiere.insert(idx, nouveauNoeud)
-        ## AJOUTER A LA LISTE DES EXPLORER ET RETIRE DE LA FRONTIERE ##
+            idx = bisect.bisect(frontiere,nouveauNoeud)
+            frontiere.insert(idx, nouveauNoeud)
         explorer.append(self)
-        if self.getGeneration() >= 1:
-            frontiere.remove(self)
+        frontiere.remove(self)
 
 a = time.time()
 root = noeud(taquin, [], None, None, -1)
+frontiere.append(root)
 root.expend()
 while frontiere[0].etatBut() != True:
     frontiere[0].expend()
@@ -133,10 +122,9 @@ while noeud.getGeneration() != 0:
     mouvements.append(noeud.getMouv())
     noeud = noeud.getPere()
 mouvements.reverse()
-
+print()
 print("root : ", taquin)
 print("but : ", goal_state)
-print("Nombre de tuiles mal placé : ", desordre(noeud.getTaquin()))
 print("Distance de manhattan initial : ", manhattan(noeud.getTaquin()))
 print("taille : ", n, "x", n)
 print("Delta : ", weight)
