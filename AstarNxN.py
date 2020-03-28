@@ -146,4 +146,3 @@ print("Taille de la frontière : ", len(frontiere))
 print("Nombre de noeuds visité : ", len(explorer))
 print("Nombre de tuile déplacé : ", len(frontiere) + len(explorer))
 print("Temps de resolution du taquin : ", b - a)
-
