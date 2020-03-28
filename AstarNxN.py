@@ -91,6 +91,8 @@ class noeud:
         return self.pere
 
     def expend(self):
+        explorer.append(self)
+        frontiere.pop(0)
         mouvementPossible = legalMoove(self.tab)
         try:
             mouvementPossible.remove(self.mouvement * -1)
@@ -104,8 +106,6 @@ class noeud:
             nouveauNoeud = noeud(tab, mouv, self.mouvement, self, self.generation)
             idx = bisect.bisect(frontiere,nouveauNoeud)
             frontiere.insert(idx, nouveauNoeud)
-        explorer.append(self)
-        frontiere.remove(self)
 
 a = time.time()
 root = noeud(taquin, [], None, None, -1)
