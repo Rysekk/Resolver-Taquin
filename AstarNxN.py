@@ -9,7 +9,6 @@ weight = 0
 trou = 0
 taquin = [6, 2, 7, 1, 0, 5, 4, 8, 3]
 
-
 frontiere = []
 explorer = []
 goal_state = []
