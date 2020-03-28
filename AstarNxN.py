@@ -1,6 +1,8 @@
 import math
 import random
 import time
+import bisect
+
 
 ### UN DELTA DE 1 DONNE LE MEILLEUR CHEMIN ###
 ### UN DELTA DE 2 RETOURNE UN CHEMIN MOINS OPTI MAIS BIEN PLUS RAPIDEMENT ###
@@ -67,6 +69,10 @@ class noeud:
         self.des = desordre(self.tab)
         self.man = manhattan(self.tab)
         self.heuristic = self.generation + (self.man * (1 + weight))
+
+    def __lt__(self, other):
+        return self.getH() < other.getH()
+
     def getH(self):
         return self.heuristic
 
@@ -106,16 +112,8 @@ class noeud:
             if frontiere == []:
                 frontiere.append(nouveauNoeud)
             else:
-                x = False
-                ### PLACER TAQUIN DANS LA FRONTIERE AU BON ENDROIT ###
-                for s in range(0, len(frontiere)):
-                    if frontiere[s].getH() >= nouveauNoeud.getH():
-                        frontiere.insert(s, nouveauNoeud)
-                        x = True
-                        break
-                ### AJOUTER A LA FIN ###
-                if x == False:
-                    frontiere.append(nouveauNoeud)
+                idx = bisect.bisect(frontiere,nouveauNoeud)
+                frontiere.insert(idx, nouveauNoeud)
         ## AJOUTER A LA LISTE DES EXPLORER ET RETIRE DE LA FRONTIERE ##
         explorer.append(self)
         if self.getGeneration() >= 1:
@@ -148,3 +146,4 @@ print("Taille de la frontière : ", len(frontiere))
 print("Nombre de noeuds visité : ", len(explorer))
 print("Nombre de tuile déplacé : ", len(frontiere) + len(explorer))
 print("Temps de resolution du taquin : ", b - a)
+
