@@ -4,21 +4,16 @@ import time
 
 ### UN DELTA DE 1 DONNE LE MEILLEUR CHEMIN ###
 ### UN DELTA DE 2 RETOURNE UN CHEMIN MOINS OPTI MAIS BIEN PLUS RAPIDEMENT ###
-
-weight = 0
+weight = 1
 trou = 0
-
-taquin = [5, 3, 6, 2, 8, 7, 4, 1, 0]
-
+taquin = [8,5,1,7,0,3,2,4,6]
 frontiere = []
 explorer = []
 goal_state = []
 n = math.sqrt(len(taquin))
 n = int(n)
-
 for s in range(0, n * n):
     goal_state.append(s)
-
 
 def legalMoove(tab):  # renvoi une liste de mouvements possible en fonction de la position du trou
     index = tab.index(trou)
@@ -41,11 +36,9 @@ def legalMoove(tab):  # renvoi une liste de mouvements possible en fonction de l
     else:  # centre
         return [-3, -1, 1, 3]
 
-
 def swapPositions(list, pos1, pos2):
     list[pos1], list[pos2] = list[pos2], list[pos1]
     return list
-
 
 def desordre(list):  # h2
     count = len(list)
@@ -53,7 +46,6 @@ def desordre(list):  # h2
         if s == list[s]:
             count -= 1
     return count
-
 
 def manhattan(initial_state):
     initial_config = initial_state
@@ -63,8 +55,6 @@ def manhattan(initial_state):
         goal_row, goal_col = int(item / n), item % n
         manDict += abs(prev_row - goal_row) + abs(prev_col - goal_col)
     return manDict
-
-genMax = 1
 
 class noeud:
     mouvement = []
@@ -76,8 +66,7 @@ class noeud:
         self.generation = generation + 1
         self.des = desordre(self.tab)
         self.man = manhattan(self.tab)
-        self.heuristic = self.generation + self.man * (1 + weight)
-
+        self.heuristic = self.generation + (self.man * (1 + weight))
     def getH(self):
         return self.heuristic
 
@@ -104,12 +93,10 @@ class noeud:
 
     def expend(self):
         mouvementPossible = legalMoove(self.tab)
-
         try:
             mouvementPossible.remove(self.mouvement * -1)
         except:
             pass
-
         for s in range(0, len(mouvementPossible)):
             tab = self.tab.copy()
             posX = tab.index(trou)
@@ -120,50 +107,31 @@ class noeud:
                 frontiere.append(nouveauNoeud)
             else:
                 x = False
-                y = False
-                ### CHECK SI TAQUIN EXISTE DANS LA FRONTIERE ###
-                for s in range(0, len(frontiere)):
-                    if nouveauNoeud.getTaquin() == frontiere[s].getTaquin():
-                        x = True
-                        y = True
-                        break
                 ### PLACER TAQUIN DANS LA FRONTIERE AU BON ENDROIT ###
                 for s in range(0, len(frontiere)):
-                    if (frontiere[s].getH() >= nouveauNoeud.getH()) & (y == False):
+                    if frontiere[s].getH() >= nouveauNoeud.getH():
                         frontiere.insert(s, nouveauNoeud)
                         x = True
                         break
                 ### AJOUTER A LA FIN ###
-                if x == False & y == False:
+                if x == False:
                     frontiere.append(nouveauNoeud)
         ## AJOUTER A LA LISTE DES EXPLORER ET RETIRE DE LA FRONTIERE ##
         explorer.append(self)
         if self.getGeneration() >= 1:
             frontiere.remove(self)
 
-
 a = time.time()
 root = noeud(taquin, [], None, None, -1)
 root.expend()
 while frontiere[0].etatBut() != True:
-    best = frontiere[0].getH()
-    count = []
-    for s in range(0, len(frontiere)):
-        if frontiere[s].getH() == best:
-            count.append(s)
-        else:
-            break
-    RNGESUS = random.choice(count)
-    ### PRAY FROR RNGESUS ###
-    frontiere[RNGESUS].expend()
+    frontiere[0].expend()
 b = time.time()
 
 ### AFFICHAGE SOLUTION ###
 mouvements = []
 noeud = frontiere[0]
 while noeud.getGeneration() != 0:
-    if noeud.getGeneration() > genMax:
-        genMax = noeud.getGeneration()
     mouvements.append(noeud.getMouv())
     noeud = noeud.getPere()
 mouvements.reverse()
