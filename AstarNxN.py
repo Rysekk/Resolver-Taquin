@@ -7,11 +7,11 @@ import bisect
 ### UN DELTA DE 1 RETOURNE UN CHEMIN MOINS OPTI MAIS BIEN PLUS RAPIDEMENT ###
 
 weight = 1
-trou = 0
-taquin = [4,1,2,3,
-          8,5,6,7,
-          12,9,10,11,
-          0,13,14,15]
+trou = 15
+taquin = [8,6,3,0,
+          1,15,12,9,
+          5,4,14,10,
+          13,11,7,2]
 
 frontiere = []
 explorer = []
