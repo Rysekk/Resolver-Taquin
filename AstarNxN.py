@@ -8,7 +8,10 @@ import bisect
 
 weight = 1
 trou = 0
-taquin = [5, 7, 6, 3, 0, 2, 8, 1, 4]
+taquin = [4,1,2,3,
+          8,5,6,7,
+          12,9,10,11,
+          0,13,14,15]
 
 frontiere = []
 explorer = []
@@ -34,7 +37,7 @@ def legalMoove(tab):  # renvoi une liste de mouvements possible en fonction de l
     if ((n * n) - 1) - (n - 1) < index < (n * n) - 1:  # bordure basse
         return [-n, -1, 1]
     if index % n == 0:  # bordure gauche
-        return [-3, 1, 3]
+        return [-n, 1, n]
     if index % n == (n - 1):  # bordure droite
         return [-n, -1, n]
     else:  # centre
