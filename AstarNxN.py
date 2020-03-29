@@ -5,9 +5,13 @@ import bisect
 
 ### UN DELTA DE 0 DONNE LE MEILLEUR CHEMIN ###
 ### UN DELTA DE 1 RETOURNE UN CHEMIN MOINS OPTI MAIS BIEN PLUS RAPIDEMENT ###
-weight = 0
+
+weight = 1
 trou = 0
-taquin = [6, 2, 7, 1, 0, 5, 4, 8, 3]
+taquin = [0,1,2,3,
+          4,5,6,7,
+          8,9,10,11,
+          12,13,14,15]
 
 frontiere = []
 explorer = []
@@ -109,7 +113,6 @@ class noeud:
 a = time.time()
 root = noeud(taquin, [], None, None, -1)
 frontiere.append(root)
-root.expend()
 while frontiere[0].etatBut() != True:
     frontiere[0].expend()
 b = time.time()
@@ -120,8 +123,8 @@ noeud = frontiere[0]
 while noeud.getGeneration() != 0:
     mouvements.append(noeud.getMouv())
     noeud = noeud.getPere()
+    
 mouvements.reverse()
-print()
 print("root : ", taquin)
 print("but : ", goal_state)
 print("Distance de manhattan initial : ", manhattan(noeud.getTaquin()))
