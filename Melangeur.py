@@ -12,23 +12,23 @@ for s in range(0,n*n):
 def legalMoove(tab): # renvoi une liste de mouvements possible en fonction de la position du trou
     index = tab.index(trou)
     if index == 0:  # coin haut gauche
-        return [1, 3]
+        return [1, n]
     if index == (n - 1):  # coin haut droit
-        return [-1, 3]
+        return [-1, n]
     if index == ((n * n) - 1) - (n - 1):  # coin bas gauche
-        return [-3, 1]
+        return [-n, 1]
     if index == (n * n) - 1:  # coin bas droit
-        return [-3, -1]
+        return [-n, -1]
     if 0 < index < (n - 1):  # bordure haute
-        return [-1, 3, 1]
+        return [-1, n, 1]
     if ((n * n) - 1) - (n - 1) < index < (n * n) - 1:  # bordure basse
-        return [-3, -1, 1]
+        return [-n, -1, 1]
     if index % n == 0:  # bordure gauche
-        return [-3, 1, 3]
+        return [-n, 1, n]
     if index % n == (n - 1):  # bordure droite
-        return [-3, -1, 3]
+        return [-n, -1, n]
     else:  # centre
-        return [-3, -1, 1, 3]
+        return [-n, -1, 1, n]
 
 def swapPositions(list, pos1, pos2):
     list[pos1], list[pos2] = list[pos2], list[pos1]
