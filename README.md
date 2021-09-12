@@ -19,7 +19,7 @@ Voici les etapes pour lancer le programme:
   - **Version Graphique** : ``TaquinGraphique.py``
 
 
-## Fabriqué avec
+## Outils utilisés
 
 * [Intellij](https://www.jetbrains.com/fr-fr/) - IDE java
 * [Visual Studio Code](https://code.visualstudio.com/) - Editeur de text
@@ -33,5 +33,5 @@ Version Final ``1.0``
 
 ## Auteurs
 
-* **Nathan THOUMINE** _alias_ [@MaxiMat91](https://github.com/DEICIDIA)
+* **Nathan THOUMINE** _alias_ [@DEICIDIA](https://github.com/DEICIDIA)
 * **Mathieu AUBRY** _alias_ [@Rysek](https://github.com/rezatera854)
