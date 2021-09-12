@@ -10,7 +10,7 @@ Le tout dans le language PYTHON
 
 Voici les etapes pour lancer le programme:
 
- Telecharger un tout les fichier puis vous pouver lancer:
+ Telecharger un des fichier :
  
   - **A Etoile** : ``AstarNxN.py``
   
