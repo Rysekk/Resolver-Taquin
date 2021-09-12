@@ -34,4 +34,4 @@ Version Final ``1.0``
 ## Auteurs
 
 * **Nathan THOUMINE** _alias_ [@DEICIDIA](https://github.com/DEICIDIA)
-* **Mathieu AUBRY** _alias_ [@Rysek](https://github.com/rezatera854)
+* **Mathieu AUBRY** _alias_ [@Rysekk](https://github.com/rezatera854)
